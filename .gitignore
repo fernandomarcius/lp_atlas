@@ -19,3 +19,8 @@
 node_modules/
 dist/
 .cache/
+
+# Assets internos (não publicar)
+_check/
+screenshots/
+uploads/
