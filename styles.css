@@ -658,3 +658,727 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     opacity: 1 !important;
   }
 }
+
+/* ============================================
+ * Mobile responsive overrides (additive only)
+ * Many grids and layouts use inline style={{gridTemplateColumns:"..."}} in JSX
+ * (home.jsx, pages.jsx). Inline styles have higher specificity than class-based CSS,
+ * so !important is used exclusively within these mobile @media blocks to override
+ * them. Desktop CSS above is untouched — these rules are purely additive.
+ * ============================================ */
+
+/* ─────────────────────────────────────────────
+ * Tablet — max-width: 1024px
+ * 4-col grids → 2-col, reduce large gaps, stack sidebars
+ * ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Hero: 4-pillar row → 2×2 */
+  /* selector targets the inline-grid div directly via its parent context */
+  .container [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Hero intro 2-col: reduce gap */
+  .container [style*="1.2fr 1fr"] {
+    gap: 40px !important;
+  }
+
+  /* Hero meta line: hide timestamp on right, simplify */
+  .container [style*="1fr auto 1fr"] {
+    grid-template-columns: 1fr auto !important;
+  }
+  .container [style*="1fr auto 1fr"] > span:last-child {
+    display: none;
+  }
+
+  /* ClientWall sidebar layout: tighten gap */
+  .container [style*="1fr 1.4fr"] {
+    gap: 48px !important;
+  }
+
+  /* Method stages: 4-col → 2-col */
+  .method-grid[style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Principles row: 4-col → number + no + yes + why → compress */
+  .princ-row[style*="60px 1.1fr 1.1fr 1fr"] {
+    grid-template-columns: 40px 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  /* Hide the "why" column at tablet — moves to phone where it stacks */
+  .princ-row .princ-why {
+    display: none;
+  }
+
+  /* Footer: 4-col already handled at 820px by existing rule — no change needed */
+
+  /* Diag question row sidebar: tighten */
+  [style*="340px 1fr"] {
+    grid-template-columns: 260px 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Diag result bar: simplify columns */
+  [style*="auto 1fr auto auto"] {
+    gap: 20px !important;
+  }
+
+  /* Service block: tighten gap */
+  [style*="1fr 2fr"] {
+    gap: 40px !important;
+  }
+
+  /* Services CTA 2fr 1fr */
+  [style*="2fr 1fr"] {
+    gap: 32px !important;
+  }
+
+  /* Large section gaps */
+  .section { padding: clamp(48px, 7vw, 100px) 0; }
+
+  /* Reduce huge inline gaps */
+  .container [style*="gap: 96px"] { gap: 48px !important; }
+  .container [style*="gap: 80px"] { gap: 40px !important; }
+  .container [style*="gap: 64px"] { gap: 40px !important; }
+}
+
+/* ─────────────────────────────────────────────
+ * Phone — max-width: 767px
+ * Stack everything, tap targets, font scaling
+ * ───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Container: reduce horizontal padding */
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Section vertical padding */
+  .section { padding: clamp(40px, 10vw, 80px) 0; }
+
+  /* ── All inline grids → single column ── */
+
+  /* Hero meta 3-col → hide entirely on phone, show only brand identity */
+  .container [style*="1fr auto 1fr"] {
+    display: none !important;
+  }
+
+  /* Hero headline font: pull down minimum */
+  #headline-text {
+    font-size: clamp(40px, 10vw, 96px) !important;
+  }
+
+  /* Hero intro 2-col → stack */
+  .container [style*="1.2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  /* Hero CTA buttons: full row */
+  .container [style*="1.2fr 1fr"] > div[style*="justify-content: flex-end"] {
+    justify-content: flex-start !important;
+  }
+
+  /* Hero 4-pillar → 1-col on phone */
+  .container [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* ClientWall sidebar 2-col → stack */
+  .container [style*="1fr 1.4fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  /* Remove sticky from sidebar (sticky aside breaks in stacked mobile layout) */
+  .container [style*="1fr 1.4fr"] > div[style*="sticky"] {
+    position: static !important;
+  }
+
+  /* Client wall: 3-col → 2-col already at 820px via existing rule */
+
+  /* WhyOrder tese 2-col → stack */
+  .container [style*="1fr 1fr"][style*="gap: 96"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  /* Generic 2-col grids → stack */
+  .container [style*="gridTemplateColumns"][style*="1fr 1fr"]:not(.client-wall) {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tese inner bad/good cols → stack */
+  .tese-row [style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* WhyOrder stats 2-col (95% / 5%) → 1-col */
+  [style*="1fr 1fr"][style*="gap: 32"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* MIT pull-quote auto+1fr → stack */
+  .mit-stat[style*="auto 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  /* Hide the large decorative quotation mark on small screens */
+  .mit-stat .display[aria-hidden] {
+    display: none !important;
+  }
+
+  /* MIT failure modes 3-col → 1-col */
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Fix borders when stacked */
+  [style*="repeat(3, 1fr)"] > div[style*="borderRight"] {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* MIT bridge 1fr auto → stack */
+  [style*="1fr auto"][style*="gap: 32"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  [style*="1fr auto"] a.mono {
+    display: inline-block;
+  }
+
+  /* Method grid 4-col → 1-col on phone */
+  .method-grid[style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Fix method stage borders when stacked */
+  .method-stage[style*="borderRight"] {
+    border-right: none !important;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  /* Diagnosis 2-col → stack */
+  .container [style*="1fr 1fr"][style*="gap: 96"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Diagnosis score button row: repeat(5) → keep on phone (compact enough) */
+
+  /* Principles rows: 4-col → 2-col then label/value only */
+  .princ-row[style*="60px 1.1fr 1.1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 24px 0 !important;
+  }
+  .princ-row .princ-num { display: none; }
+  .princ-row .princ-why {
+    display: block;
+    border-left: none !important;
+    padding-left: 0 !important;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+
+  /* Sobre manifesto sidebar 1fr 2fr → stack */
+  [style*="1fr 2fr"][style*="gap: 96"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  [style*="1fr 2fr"] > div[style*="sticky"] {
+    position: static !important;
+  }
+
+  /* Sobre fit 2-col → stack */
+  [style*="1fr 1fr"][style*="gap: 32"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sobre crew 3-col → 1-col (overrides CSS class) */
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sobre numbers 4-col → 2-col */
+  /* Already handled by repeat(4,1fr) rule above → 1fr 1fr */
+
+  /* ServiceBlock 1fr 2fr → stack */
+  [style*="1fr 2fr"][style*="gap: 64"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* ServiceBlock deliverables 1fr 1fr → keep 2-col (cards are small enough) */
+
+  /* Services overview 4-col → 2-col */
+  /* Already handled by repeat(4,1fr) rule */
+
+  /* Services CTA 2fr 1fr → stack */
+  [style*="2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  [style*="2fr 1fr"] > div[style*="flex-start"] {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Contato form+aside 2fr 1fr → stack */
+  /* Handled by 2fr 1fr rule above */
+
+  /* Contato form fields 1fr 1fr → stack */
+  form [style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Contato stage selector repeat(4) → 2×2 */
+  /* Handled by repeat(4,1fr) → 1fr 1fr rule */
+
+  /* Diag question row 340px 1fr → stack */
+  [style*="340px 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  [style*="340px 1fr"] > div[style*="sticky"] {
+    position: static !important;
+  }
+
+  /* Diag levels repeat(4) → 2×2 */
+  /* Handled by repeat(4,1fr) → 1fr 1fr rule */
+
+  /* Diag result 1fr 1.3fr → stack */
+  [style*="1fr 1.3fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Diag result bar: simplify */
+  [style*="auto 1fr auto auto"] {
+    grid-template-columns: auto 1fr !important;
+    gap: 16px !important;
+    flex-wrap: wrap;
+  }
+  /* Hide stage bar progress mini-bars on phone — too cramped */
+  [style*="auto 1fr auto auto"] > div:nth-child(3) {
+    display: none !important;
+  }
+
+  /* Result bar mini 4-col → 2-col */
+  [style*="repeat(4, 1fr)"][style*="gap: 4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Sticky result bar: reduce height */
+  [style*="top: 64"][style*="zIndex: 20"] {
+    font-size: 13px;
+  }
+
+  /* Form: kill iOS zoom on textarea */
+  textarea { font-size: 16px !important; }
+  input[type="text"],
+  input[type="email"] {
+    font-size: 16px !important;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+
+  /* Sticky aside in contato → static */
+  aside [style*="sticky"] {
+    position: static !important;
+  }
+
+  /* Nav: ensure burger has room — handled in hamburger section below */
+
+  /* Manifesto headline: scale down minimum */
+  .display.reveal.reveal-zoom[style*="clamp(56px"] {
+    font-size: clamp(40px, 10vw, 100px) !important;
+  }
+
+  /* Closing CTA headline */
+  [style*="clamp(44px"] {
+    font-size: clamp(36px, 9vw, 72px) !important;
+  }
+
+  /* Large gaps → 24px */
+  .container [style*="gap: 80"] { gap: 32px !important; }
+  .container [style*="gap: 64"] { gap: 28px !important; }
+  .container [style*="gap: 48"] { gap: 24px !important; }
+
+  /* Footer bottom: stack */
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Buttons in hero: allow wrap, natural alignment */
+  .btn { min-height: 44px; }
+
+  /* WhyOrder: kill sticky on the sidebar when stacking */
+  .container [style*="1fr 1fr"][style*="gap: 96"] > div:first-child,
+  .container [style*="1fr 1fr"][style*="gap: 96px"] > div:first-child {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* Tese label: scale down on narrow mobile */
+  .tese-label {
+    font-size: 22px !important;
+  }
+
+  /* Inline 68px stat numbers (95% / 5%): clamp on mobile */
+  [style*="font-size: 68px"],
+  [style*="fontSize: 68"] {
+    font-size: clamp(40px, 10vw, 56px) !important;
+  }
+
+  /* Contato urgency selector: equalize flex buttons */
+  form [style*="display: flex"][style*="border: 1px solid"] > button,
+  form [style*="display:flex"][style*="border:1px solid"] > button {
+    min-width: 0 !important;
+    font-size: 13px !important;
+    padding: 14px 10px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+ * Small phone — max-width: 480px
+ * Fine-tune headlines, padding, CTA full-width
+ * ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Tighter container padding */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Section vertical rhythm */
+  .section { padding: 48px 0; }
+
+  /* Hero headline: smallest phones */
+  #headline-text {
+    font-size: clamp(36px, 11vw, 72px) !important;
+    line-height: 0.95 !important;
+  }
+
+  /* Hero pillars → single column on tiny phones (exclude form descendants) */
+  .container [style*="repeat(4, 1fr)"]:not(form *) {
+    grid-template-columns: 1fr !important;
+  }
+  /* Form stage selector stays 2-col on small phone */
+  form [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* SectionHead titles: tighter line-height */
+  .display { line-height: 0.95 !important; }
+
+  /* Buttons: full width with space between label and arrow */
+  .btn {
+    width: 100%;
+    justify-content: space-between;
+    min-height: 48px;
+  }
+  /* Except btn-sm — keep compact */
+  .btn.btn-sm {
+    width: auto;
+    justify-content: center;
+    min-height: 40px;
+  }
+
+  /* MIT failure mode cards: tighter padding */
+  [style*="repeat(3, 1fr)"] > div {
+    padding: 24px 20px !important;
+  }
+
+  /* Method stage: tighter padding */
+  .method-stage {
+    padding: 24px 20px 28px !important;
+  }
+
+  /* Principles: even tighter */
+  .princ-row { padding: 20px 0 !important; }
+
+  /* Closing CTA box: tighter padding */
+  [style*="clamp(48px, 7vw"] {
+    padding: 32px 24px !important;
+  }
+
+  /* Closing CTA buttons: full width stack */
+  [style*="display: flex"][style*="gap: 12"][style*="flexWrap: wrap"] {
+    flex-direction: column !important;
+  }
+
+  /* ServiceBlock heading: smaller minimum */
+  [style*="clamp(48px, 6vw"] {
+    font-size: clamp(36px, 10vw, 72px) !important;
+  }
+
+  /* Diag: score buttons compact text — no override needed, they use short labels */
+
+  /* Diag result bar: stack fully */
+  [style*="auto 1fr auto auto"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  [style*="auto 1fr auto auto"] > div:nth-child(4) {
+    justify-self: start;
+  }
+
+  /* Footer: stack columns */
+  .footer-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .footer { padding: 40px 0 28px; }
+}
+
+/* ─────────────────────────────────────────────
+ * Touch devices — neutralize persistent :hover states
+ * On touch, :hover sticks after tap and looks broken.
+ * ───────────────────────────────────────────── */
+@media (hover: none) {
+  /* Method stage: no hover background change */
+  .method-stage:hover {
+    background: transparent !important;
+  }
+  .method-stage:hover .method-deliv {
+    transform: none !important;
+  }
+  .method-stage:hover .method-deliv span.arr {
+    color: var(--muted-2) !important;
+  }
+  .method-stage:hover .method-num::before {
+    opacity: 0.5 !important;
+  }
+
+  /* Client wall: no hover indent */
+  .client-name:hover {
+    background: transparent !important;
+    padding-left: 20px !important;
+  }
+  .client-name:hover .client-label {
+    font-style: normal !important;
+  }
+
+  /* Tese rows: no hover transforms */
+  .tese-row:hover .tese-num { color: inherit !important; }
+  .tese-row:hover .tese-label::after { width: 0 !important; }
+  .tese-row:hover .tese-bad { opacity: 1 !important; }
+  .tese-row:hover .tese-good { transform: none !important; }
+
+  /* Principles rows: no hover shifts */
+  .princ-row:hover .princ-no {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .princ-row:hover .princ-yes {
+    transform: none !important;
+    color: var(--ink) !important;
+  }
+  .princ-row:hover .princ-why {
+    color: var(--muted) !important;
+    border-left-color: var(--rule) !important;
+  }
+  .princ-row:hover .princ-num { color: var(--muted-2) !important; }
+  .princ-row:hover .princ-num::before { background: var(--muted-2) !important; }
+
+  /* Btn: keep visual feedback but use :active instead of :hover for translateY */
+  .btn:hover { transform: none; }
+  .btn:active { transform: translateY(-1px); }
+  .btn:hover .arr { transform: none; }
+  .btn:active .arr { transform: translateX(3px); }
+
+  /* Ghost button hover → suppress */
+  .btn-ghost:hover {
+    background: transparent !important;
+    color: var(--ink) !important;
+    border-color: var(--rule-strong) !important;
+  }
+  .btn-ghost:active {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    border-color: var(--ink) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+ * Hamburger + mobile drawer
+ * Hidden above 820px. Shown at ≤820px.
+ * Uses data-open attribute toggled by JSX.
+ * ───────────────────────────────────────────── */
+
+/* Body scroll lock when drawer is open */
+body[data-nav-open="true"] { overflow: hidden; }
+
+/* ── Burger button ── */
+.nav-burger {
+  display: none; /* hidden on desktop */
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+/* Three-line icon via pseudo-elements + middle inner span */
+.nav-burger::before,
+.nav-burger::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 10px;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.22s ease, opacity 0.18s ease, top 0.22s ease;
+}
+.nav-burger-line {
+  display: block;
+  position: absolute;
+  left: 10px;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.22s ease, opacity 0.18s ease, top 0.22s ease;
+}
+.nav-burger::before { top: 15px; }
+.nav-burger-line    { top: 21px; } /* the real middle bar — an actual element */
+.nav-burger::after  { top: 27px; }
+
+/* Animate to × when expanded */
+.nav-burger[aria-expanded="true"]::before {
+  top: 21px;
+  transform: rotate(45deg);
+}
+.nav-burger[aria-expanded="true"] .nav-burger-line {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-burger[aria-expanded="true"]::after {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+/* Show burger at mobile breakpoint */
+@media (max-width: 820px) {
+  .nav-burger { display: flex; }
+}
+
+/* ── Drawer overlay ── */
+.nav-drawer {
+  display: none; /* hidden on desktop */
+  position: fixed;
+  inset: 0;
+  z-index: 49; /* below nav (z:50) so nav sits on top */
+  background: var(--paper);
+  padding-top: 64px; /* clear the nav bar height */
+  /* transition handled by data-open states */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.nav-drawer[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Show drawer mechanics only at mobile */
+@media (max-width: 820px) {
+  .nav-drawer { display: block; }
+}
+
+/* ── Drawer inner layout ── */
+.nav-drawer-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 28px 32px;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Drawer links ── */
+.nav-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  line-height: 1;
+}
+.nav-drawer-link:first-child { border-top: 1px solid var(--rule); }
+
+.nav-drawer-link:hover,
+.nav-drawer-link.active {
+  color: var(--accent);
+}
+.nav-drawer-link.active::after {
+  content: "—";
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0;
+}
+
+/* CTA link in drawer — styled as the nav btn */
+.nav-drawer-link--cta {
+  margin-top: 32px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper) !important;
+  padding: 16px 20px;
+  justify-content: space-between;
+  min-height: 48px;
+  border-bottom: none;
+}
+.nav-drawer-link--cta:first-child { border-top: none; }
+.nav-drawer-link--cta:hover,
+.nav-drawer-link--cta.active {
+  color: var(--paper) !important;
+}
+.nav-drawer-link--cta.active::after { display: none; }
+
+/* ── Drawer close button (top-right × inside the drawer) ── */
+.nav-drawer-close {
+  /* Burger button animates to X and doubles as close — hide this redundant control */
+  display: none;
+}
+.nav-drawer-close::before,
+.nav-drawer-close::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+}
+.nav-drawer-close::before { transform: rotate(45deg); }
+.nav-drawer-close::after  { transform: rotate(-45deg); }
+
+/* ── Drawer footer meta ── */
+.nav-drawer-meta {
+  margin-top: auto;
+  padding-top: 32px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  line-height: 1.8;
+}

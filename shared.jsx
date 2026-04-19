@@ -17,27 +17,86 @@ function AtlasMark({ size = 26 }) {
 
 /* ---------- Nav ---------- */
 function Nav({ active = "home" }) {
+  const open = React.useState(false);
+  const setOpen = open[1];
+  const isOpen = open[0];
+
+  const close = React.useCallback(function() { setOpen(false); }, []);
+  const toggle = React.useCallback(function() { setOpen(function(prev) { return !prev; }); }, []);
+
+  React.useEffect(function() {
+    document.body.dataset.navOpen = isOpen ? "true" : "false";
+  }, [isOpen]);
+
+  React.useEffect(function() {
+    function onKey(e) {
+      if (e.key === "Escape") close();
+    }
+    document.addEventListener("keydown", onKey);
+    return function() {
+      document.removeEventListener("keydown", onKey);
+      document.body.dataset.navOpen = "false";
+    };
+  }, []);
+
   return (
-    <header className="nav">
-      <div className="container nav-inner">
-        <a href="index.html" className="brand" style={{ color: "var(--ink)" }}>
-          <AtlasMark />
-          <span style={{ fontFamily: "var(--font-display)" }}>Atlas</span>
-          <span className="mono" style={{ marginLeft: 6, fontSize: 10 }}>
-            / Infraestrutura de Inteligência
-          </span>
-        </a>
-        <nav className="nav-links">
-          <a href="index.html" className={active === "home" ? "active" : ""}>Início</a>
-          <a href="sobre.html" className={active === "sobre" ? "active" : ""}>Sobre</a>
-          <a href="servicos.html" className={active === "servicos" ? "active" : ""}>Serviços</a>
-          <a href="diagnostico.html" className={active === "diag" ? "active" : ""}>Diagnóstico</a>
-          <a href="contato.html" className="btn btn-sm" style={{ padding: "8px 14px" }}>
-            Agendar conversa <span className="arr">→</span>
+    <React.Fragment>
+      <header className="nav">
+        <div className="container nav-inner">
+          <a href="index.html" className="brand" style={{ color: "var(--ink)" }}>
+            <AtlasMark />
+            <span style={{ fontFamily: "var(--font-display)" }}>Atlas</span>
+            <span className="mono" style={{ marginLeft: 6, fontSize: 10 }}>
+              / Infraestrutura de Inteligência
+            </span>
           </a>
-        </nav>
+          <nav className="nav-links">
+            <a href="index.html" className={active === "home" ? "active" : ""}>Início</a>
+            <a href="sobre.html" className={active === "sobre" ? "active" : ""}>Sobre</a>
+            <a href="servicos.html" className={active === "servicos" ? "active" : ""}>Serviços</a>
+            <a href="diagnostico.html" className={active === "diag" ? "active" : ""}>Diagnóstico</a>
+            <a href="contato.html" className="btn btn-sm" style={{ padding: "8px 14px" }}>
+              Agendar conversa <span className="arr">→</span>
+            </a>
+          </nav>
+          <button
+            className="nav-burger"
+            aria-label="Menu"
+            aria-expanded={isOpen ? "true" : "false"}
+            aria-controls="nav-drawer"
+            onClick={toggle}
+          >
+            <span></span>
+            <span className="nav-burger-line"></span>
+            <span></span>
+          </button>
+        </div>
+      </header>
+      <div
+        className="nav-drawer"
+        id="nav-drawer"
+        data-open={isOpen ? "true" : "false"}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!isOpen}
+        onClick={close}
+      >
+        <div className="nav-drawer-inner" onClick={function(e) { e.stopPropagation(); }}>
+          <button className="nav-drawer-close" aria-label="Fechar menu" onClick={close}>
+            <span></span>
+          </button>
+          <nav>
+            <a href="index.html" className={"nav-drawer-link" + (active === "home" ? " active" : "")} onClick={close}>Início</a>
+            <a href="sobre.html" className={"nav-drawer-link" + (active === "sobre" ? " active" : "")} onClick={close}>Sobre</a>
+            <a href="servicos.html" className={"nav-drawer-link" + (active === "servicos" ? " active" : "")} onClick={close}>Serviços</a>
+            <a href="diagnostico.html" className={"nav-drawer-link" + (active === "diag" ? " active" : "")} onClick={close}>Diagnóstico</a>
+            <a href="contato.html" className="btn" onClick={close}>
+              Agendar conversa <span className="arr">→</span>
+            </a>
+          </nav>
+        </div>
       </div>
-    </header>
+    </React.Fragment>
   );
 }
 
