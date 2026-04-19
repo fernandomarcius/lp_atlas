@@ -20,7 +20,7 @@ function Nav({ active = "home" }) {
   return (
     <header className="nav">
       <div className="container nav-inner">
-        <a href="Landing Page.html" className="brand" style={{ color: "var(--ink)" }}>
+        <a href="index.html" className="brand" style={{ color: "var(--ink)" }}>
           <AtlasMark />
           <span style={{ fontFamily: "var(--font-display)" }}>Atlas</span>
           <span className="mono" style={{ marginLeft: 6, fontSize: 10 }}>
@@ -28,7 +28,7 @@ function Nav({ active = "home" }) {
           </span>
         </a>
         <nav className="nav-links">
-          <a href="Landing Page.html" className={active === "home" ? "active" : ""}>Início</a>
+          <a href="index.html" className={active === "home" ? "active" : ""}>Início</a>
           <a href="sobre.html" className={active === "sobre" ? "active" : ""}>Sobre</a>
           <a href="servicos.html" className={active === "servicos" ? "active" : ""}>Serviços</a>
           <a href="diagnostico.html" className={active === "diag" ? "active" : ""}>Diagnóstico</a>
