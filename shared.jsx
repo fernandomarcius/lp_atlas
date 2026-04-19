@@ -198,4 +198,32 @@ function SectionHead({ eyebrow, title, lede, align = "left", index }) {
   );
 }
 
-Object.assign(window, { AtlasMark, Nav, Footer, MetaStrip, SectionHead });
+/* ---------- Mobile Sticky CTA ---------- */
+function MobileStickyCTA({ href = "contato.html", label = "Agendar diagnóstico" }) {
+  const ref = React.useRef(null);
+
+  React.useEffect(function() {
+    // Show after user scrolls past ~80% of viewport height
+    var threshold = window.innerHeight * 0.8;
+    function onScroll() {
+      if (ref.current) {
+        if (window.scrollY > threshold) {
+          ref.current.classList.add("visible");
+        } else {
+          ref.current.classList.remove("visible");
+        }
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return function() { window.removeEventListener("scroll", onScroll); };
+  }, []);
+
+  return (
+    <a ref={ref} href={href} className="mobile-sticky-cta" aria-label={label}>
+      <span>{label}</span>
+      <span className="arr" aria-hidden="true">→</span>
+    </a>
+  );
+}
+
+Object.assign(window, { AtlasMark, Nav, Footer, MetaStrip, SectionHead, MobileStickyCTA });

@@ -16,7 +16,7 @@ function Hero() {
   const ts = now.toISOString().replace("T", " ").slice(0, 19);
 
   return (
-    <section className="section" style={{ paddingTop: 56, paddingBottom: 0, position: "relative" }}>
+    <section id="hero" className="section" style={{ paddingTop: 56, paddingBottom: 0, position: "relative" }}>
       <div className="container">
         {/* Top meta line */}
         <div style={{
@@ -1026,6 +1026,7 @@ function Home() {
       <InlineDiagnosis />
       <Principles />
       <ClosingCTA />
+      <MobileStickyCTA />
       <Footer />
       <TweaksPanel state={tweaks} setState={setTweaks} visible={tweakOpen} />
     </>

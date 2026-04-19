@@ -256,6 +256,7 @@ function Sobre() {
         </div>
       </section>
 
+      <MobileStickyCTA />
       <Footer />
     </>
   );
@@ -475,6 +476,7 @@ function Servicos() {
         </div>
       </section>
 
+      <MobileStickyCTA />
       <Footer />
     </>
   );
